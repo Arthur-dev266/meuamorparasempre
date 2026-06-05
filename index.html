@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0a0f">
+<title>Nossa História 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: #0a0a0f;
+  color: #f0e6d3;
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 100% 50% at 50% 0%, rgba(180,60,100,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 60% at 80% 90%, rgba(100,60,180,0.12) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 5rem;
+}
+
+/* ===== HEADER ===== */
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: fadeDown 1s ease both;
+}
+
+.header .subtitle {
+  font-size: 0.72rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #c87a9a;
+  margin-bottom: 0.7rem;
+}
+
+.header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.9rem, 9vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1.15;
+  color: #f5e6d8;
+}
+
+.header h1 em { font-style: italic; color: #e8829a; }
+
+.heart-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 1.2rem auto 0;
+  width: fit-content;
+}
+.heart-divider::before, .heart-divider::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 1px;
+}
+.heart-divider::before { background: linear-gradient(90deg, transparent, #c87a9a); }
+.heart-divider::after  { background: linear-gradient(90deg, #c87a9a, transparent); }
+.heart-divider svg { width: 16px; height: 16px; fill: #e8829a; }
+
+/* ===== SEÇÕES ===== */
+section {
+  margin-bottom: 2.5rem;
+  animation: fadeUp 0.8s ease both;
+}
+section:nth-child(2) { animation-delay: 0.1s; }
+section:nth-child(3) { animation-delay: 0.25s; }
+section:nth-child(4) { animation-delay: 0.4s; }
+section:nth-child(5) { animation-delay: 0.55s; }
+
+.section-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #9a7a8a;
+  margin-bottom: 1rem;
+}
+
+/* ===== PLAYER SPOTIFY MOBILE ===== */
+.spotify-card {
+  background: #121212;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+}
+
+/* Blur de fundo atrás da foto — efeito Spotify */
+.spotify-bg-blur {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(180,60,100,0.25) 0%, #121212 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.spotify-inner {
+  position: relative;
+  z-index: 1;
+  padding: 1.5rem 1.5rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---- CAPA GRANDE E CENTRALIZADA ---- */
+.album-art-wrap {
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto 1.5rem;
+}
+
+.album-art {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 4px 16px rgba(180,60,100,0.3);
+  border: 1px solid rgba(255,255,255,0.08);
+  background: #1a0d16;
+}
+
+/* Placeholder quando não tem foto */
+.album-art-placeholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #3d1a2a 0%, #1a0d2a 50%, #2a0d1a 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 4px 16px rgba(180,60,100,0.3);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.album-art-placeholder svg {
+  width: 56px; height: 56px;
+  fill: none;
+  stroke: rgba(232,130,154,0.5);
+  stroke-width: 1.2;
+}
+
+.album-art-placeholder span {
+  font-size: 0.78rem;
+  color: rgba(232,130,154,0.5);
+  text-align: center;
+  line-height: 1.5;
+  padding: 0 1rem;
+}
+
+/* Pulsação quando tocando */
+@keyframes albumPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 4px 16px rgba(180,60,100,0.3); }
+  50% { transform: scale(1.012); box-shadow: 0 28px 70px rgba(0,0,0,0.75), 0 8px 24px rgba(180,60,100,0.45); }
+}
+.playing .album-art, .playing .album-art-placeholder {
+  animation: albumPulse 2.5s ease-in-out infinite;
+}
+
+/* ---- TRACK INFO ---- */
+.track-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+
+.track-texts { flex: 1; min-width: 0; }
+
+.track-title {
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-artist {
+  font-size: 0.82rem;
+  color: #a0a0a0;
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-heart {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: #e8829a;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  30% { transform: scale(1.25); }
+  60% { transform: scale(0.95); }
+}
+.heart-anim { animation: heartBeat 1.6s ease-in-out infinite; display: inline-block; }
+
+/* ---- PROGRESSO ---- */
+.progress-area { width: 100%; margin-bottom: 1.2rem; }
+
+.progress-bar-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 2px;
+  cursor: pointer;
+  margin-bottom: 7px;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: #ffffff;
+  width: 0%;
+  transition: width 0.5s linear;
+  position: relative;
+}
+
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  transition: transform 0.15s;
+}
+
+.progress-bar-track:active .progress-bar-fill::after,
+.progress-bar-track:hover .progress-bar-fill::after { transform: translateY(-50%) scale(1); }
+
+.time-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: #808080;
+}
+
+/* ---- CONTROLES ---- */
+.controls {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.ctrl-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #b0b0b0;
+  padding: 10px;
+  transition: color 0.15s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.ctrl-btn:active { transform: scale(0.9); }
+.ctrl-btn:hover, .ctrl-btn:active { color: #ffffff; }
+.ctrl-btn svg { width: 22px; height: 22px; fill: currentColor; }
+
+.ctrl-btn.play-btn {
+  width: 60px;
+  height: 60px;
+  background: #ffffff;
+  color: #000;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ctrl-btn.play-btn svg { width: 26px; height: 26px; }
+.ctrl-btn.play-btn:hover, .ctrl-btn.play-btn:active { background: #efefef; color: #000; transform: scale(1.05); }
+
+/* Badge Spotify */
+.spotify-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: center;
+  opacity: 0.3;
+  margin-top: 0.8rem;
+  padding-bottom: 0.2rem;
+}
+.spotify-badge svg { width: 16px; height: 16px; fill: currentColor; }
+.spotify-badge span { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; }
+
+
+/* ===== CONTADOR ===== */
+.timer-card {
+  background: linear-gradient(135deg, #1a0d16 0%, #0f0d1a 100%);
+  border: 1px solid rgba(232,130,154,0.18);
+  border-radius: 20px;
+  padding: 1.8rem 1.2rem;
+  text-align: center;
+}
+
+.timer-since {
+  font-size: 0.78rem;
+  color: #9a7a8a;
+  margin-bottom: 1rem;
+}
+
+.timer-date-display {
+  font-size: 0.75rem;
+  color: #c87a9a;
+  margin-bottom: 1.2rem;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+}
+
+.timer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.55rem;
+  margin-bottom: 0.55rem;
+}
+
+.timer-grid-bottom {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+
+.timer-unit {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 0.8rem 0.2rem;
+}
+
+.timer-unit.highlight {
+  border-color: rgba(232,130,154,0.25);
+  background: rgba(232,130,154,0.06);
+}
+
+.timer-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #e8829a;
+  line-height: 1;
+  display: block;
+}
+
+.timer-unit.highlight .timer-number {
+  font-size: 1.9rem;
+  color: #f0a0b8;
+}
+
+.timer-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #7a6a72;
+  margin-top: 0.3rem;
+  display: block;
+}
+
+.timer-phrase {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #c87a9a;
+}
+
+@keyframes secPulse {
+  0%   { opacity: 1; transform: scale(1); }
+  15%  { opacity: 0.5; transform: scale(0.92); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.sec-tick { animation: secPulse 1s ease; }
+
+
+/* ===== DECLARAÇÃO ===== */
+.declaration-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.declaration-card::before {
+  content: '"';
+  font-family: 'Playfair Display', serif;
+  font-size: 7rem;
+  line-height: 1;
+  color: rgba(232,130,154,0.1);
+  position: absolute;
+  top: -0.5rem;
+  left: 1rem;
+  pointer-events: none;
+}
+
+.declaration-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.98rem;
+  line-height: 1.95;
+  color: #e8d8cc;
+  position: relative;
+  z-index: 1;
+}
+
+.declaration-signature {
+  margin-top: 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  justify-content: flex-end;
+}
+
+.declaration-signature::before {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+}
+
+.sig-name {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #c87a9a;
+}
+
+
+/* ===== CARROSSEL ===== */
+.carousel-wrapper { position: relative; }
+
+.carousel-track-outer {
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.carousel-slide {
+  min-width: 100%;
+  position: relative;
+  aspect-ratio: 4/3;
+  background: #1a0d16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.carousel-slide img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.carousel-slide .slide-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  color: #5a3a48;
+  font-size: 0.8rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.carousel-slide .slide-placeholder svg {
+  width: 44px; height: 44px;
+  fill: none;
+  stroke: #5a3a48;
+  stroke-width: 1.5;
+}
+
+.carousel-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 2.5rem 1.2rem 1rem;
+  background: linear-gradient(transparent, rgba(0,0,0,0.72));
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.88);
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+}
+
+.carousel-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  margin-top: 1rem;
+}
+
+.carousel-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.05);
+  color: #e0c8d0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  min-width: 44px; min-height: 44px;
+}
+
+.carousel-btn:active {
+  background: rgba(232,130,154,0.2);
+  border-color: rgba(232,130,154,0.4);
+}
+
+.carousel-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+.carousel-dots { display: flex; gap: 6px; align-items: center; }
+
+.dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: background 0.2s, transform 0.2s;
+  cursor: pointer;
+  min-width: 20px; min-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dot::after {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.dot.active::after {
+  background: #e8829a;
+  transform: scale(1.4);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  animation: fadeUp 0.8s ease 0.65s both;
+}
+
+.footer p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: #9a7a8a;
+}
+
+.footer .hearts { letter-spacing: 0.6em; font-size: 1.1rem; margin-top: 0.5rem; color: #c87a9a; }
+
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- CABEÇALHO -->
+  <header class="header">
+    <p class="subtitle">Uma carta para você</p>
+    <h1>
+      <em id="nome1-header">Seu Nome</em>
+      &amp;
+      <em id="nome2-header">Nome Dela</em>
+    </h1>
+    <div class="heart-divider">
+      <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    </div>
+  </header>
+
+
+  <!-- 1. PLAYER SPOTIFY -->
+  <section>
+    <p class="section-label">Nossa música</p>
+
+    <div class="spotify-card" id="spotifyCard">
+      <div class="spotify-bg-blur"></div>
+      <div class="spotify-inner">
+
+        <!-- ★ CAPA GRANDE — foto do casal centralizada ★ -->
+        <div class="album-art-wrap">
+          <!--
+            ══════════════════════════════════════════
+            COLOQUE SUA FOTO AQUI — três opções:
+
+            OPÇÃO 1 — arquivo local (coloque na mesma pasta do HTML):
+            <img class="album-art" src="foto-casal.jpg" alt="nós dois">
+
+            OPÇÃO 2 — imagem da internet (URL direto):
+            <img class="album-art" src="https://LINK_DA_FOTO.jpg" alt="nós dois">
+
+            OPÇÃO 3 — base64 (foto incorporada no HTML):
+            <img class="album-art" src="data:image/jpeg;base64,SEU_BASE64_AQUI" alt="nós dois">
+
+            Substitua o bloco abaixo pela tag <img> escolhida:
+            ══════════════════════════════════════════
+          -->
+          <div class="album-art-placeholder" id="albumArtArea">
+            <img class="album-art" src="foto-casal.jpg" alt="nós dois">
+          </div>
+        </div>
+
+        <!-- Nome da música e artista -->
+        <div class="track-row">
+          <div class="track-texts">
+            <div class="track-title" id="trackTitle">Nossa Música</div>
+            <div class="track-artist" id="trackArtist">Artista</div>
+          </div>
+          <button class="track-heart" title="Curtida">
+            <svg class="heart-anim" viewBox="0 0 24 24" width="24" height="24" fill="#e8829a">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Progresso -->
+        <div class="progress-area">
+          <div class="progress-bar-track" id="progressTrack">
+            <div class="progress-bar-fill" id="progressFill"></div>
+          </div>
+          <div class="time-row">
+            <span id="currentTime">0:00</span>
+            <span id="totalTime">3:47</span>
+          </div>
+        </div>
+
+        <!-- Controles -->
+        <div class="controls">
+          <button class="ctrl-btn" title="Embaralhar">
+            <svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+          </button>
+          <button class="ctrl-btn" title="Anterior">
+            <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+          </button>
+          <button class="ctrl-btn play-btn" id="playBtn" title="Play">
+            <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="ctrl-btn" title="Próximo">
+            <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"/></svg>
+          </button>
+          <button class="ctrl-btn" title="Repetir">
+            <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+          </button>
+        </div>
+
+        <!-- Badge Spotify -->
+        <div class="spotify-badge">
+          <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+          <span>Spotify</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 2. TEMPO JUNTOS -->
+  <section>
+    <p class="section-label">Tempo juntos</p>
+    <div class="timer-card">
+      <p class="timer-since">Estamos juntos há</p>
+      <p class="timer-date-display" id="timerDateDisplay">desde sempre ♡</p>
+      <div class="timer-grid">
+        <div class="timer-unit"><span class="timer-number" id="t-anos">0</span><span class="timer-label">Anos</span></div>
+        <div class="timer-unit"><span class="timer-number" id="t-meses">0</span><span class="timer-label">Meses</span></div>
+        <div class="timer-unit"><span class="timer-number" id="t-dias">0</span><span class="timer-label">Dias</span></div>
+      </div>
+      <div class="timer-grid-bottom">
+        <div class="timer-unit"><span class="timer-number" id="t-horas">0</span><span class="timer-label">Horas</span></div>
+        <div class="timer-unit"><span class="timer-number" id="t-minutos">0</span><span class="timer-label">Minutos</span></div>
+        <div class="timer-unit highlight"><span class="timer-number" id="t-segundos">0</span><span class="timer-label">Segundos</span></div>
+      </div>
+      <p class="timer-phrase" id="timerPhrase">e cada segundo valeu a pena ♡</p>
+    </div>
+  </section>
+
+
+  <!-- 3. DECLARAÇÃO -->
+  <section>
+    <p class="section-label">Declaração</p>
+    <div class="declaration-card">
+      <!--
+        EDITE: sua declaração aqui
+        Use <br><br> para parágrafos
+      -->
+      <p class="declaration-text">
+        Minha querida Giulia, minha pretinha,<br><br>
+        Hoje senti no coração o desejo de colocar em palavras tudo aquilo que muitas vezes eu sinto, mas nem sempre consigo expressar da forma que você merece.<br><br>
+        Antes de qualquer coisa, quero agradecer a Deus pela sua vida. Entre tantas pessoas no mundo, Ele permitiu que os nossos caminhos se encontrassem. E quanto mais o tempo passa, mais eu percebo que você é uma das maiores bênçãos que Ele me concedeu.<br><br>
+        Pretinha, você é um presente de Deus para mim. Seu carinho, sua dedicação, sua fé e seu jeito de enxergar a vida me inspiram todos os dias. Em você encontro companhia, apoio, alegria e uma paz que só pode vir de alguém que busca ao Senhor de coração sincero.<br><br>
+        Agradeço a Deus por cada conversa, cada sorriso, cada abraço e por todos os momentos que já compartilhamos. Mesmo nos dias difíceis, saber que tenho você ao meu lado me dá forças para seguir em frente. Sua presença torna os meus dias mais leves e meu coração mais feliz.<br><br>
+        O que mais desejo é que o nosso relacionamento continue sendo guiado por Deus. Que Ele seja sempre o centro da nossa história, orientando nossos passos, fortalecendo nosso amor e nos ensinando a crescer juntos em fé, respeito e cumplicidade.<br><br>
+        Quero caminhar ao seu lado buscando os propósitos que Deus tem para nossas vidas. Quero orar com você, sonhar com você e construir uma história firmada nos princípios que aprendemos em Sua Palavra. Porque acredito que quando Deus está no centro de um relacionamento, o amor se torna mais forte, mais puro e mais duradouro.<br><br>
+        Giulia, minha pretinha, você é muito especial para mim. Peço a Deus que cuide do seu coração, proteja seus caminhos e realize os sonhos que Ele mesmo colocou dentro de você.<br><br>
+        Nunca se esqueça de que você é amada: amada por Deus, que a criou de forma única e maravilhosa, e amada por mim, que todos os dias encontro mais motivos para agradecer ao Senhor pela sua vida.<br><br>
+        Que Deus continue escrevendo a nossa história e nos conduzindo segundo a Sua vontade.<br><br>
+        Eu te amo e sou grato ao Senhor por ter você em minha vida.
+      </p>
+      <div class="declaration-signature">
+        <span class="sig-name">Com todo o meu amor, <strong id="nome1-sig">Arthur</strong> ❤️</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 4. CARROSSEL -->
+  <section>
+    <p class="section-label">Nossas memórias</p>
+    <div class="carousel-wrapper">
+      <div class="carousel-track-outer">
+        <div class="carousel-track" id="carouselTrack">
+
+          <!--
+            ══════════════════════════════════════════
+            ADICIONE SUAS FOTOS AQUI
+
+            Para cada foto, use:
+            <div class="carousel-slide">
+              <img src="foto1.jpg" alt="descrição">
+              <div class="carousel-caption">Legenda ♡</div>
+            </div>
+
+            Pode colocar quantas quiser!
+            ══════════════════════════════════════════
+          -->
+
+          <div class="carousel-slide">
+            <div class="slide-placeholder">
+              <img src="foto1.png" alt="descrição">
+            </div>
+            <div class="carousel-caption">Nossa primeira foto juntos ♡</div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="slide-placeholder">
+              <img src="foto2.jpg" alt="descrição">
+            </div>
+            <div class="carousel-caption">Um dos nossos momentos favoritos ♡</div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="slide-placeholder">
+              <img src="foto3.jpg" alt="descrição">
+            </div>
+            <div class="carousel-caption">Memórias que guardo no coração ♡</div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="slide-placeholder">
+              <img src="foto4.jpg" alt="descrição">
+            </div>
+            <div class="carousel-caption">Para sempre na memória ♡</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="carousel-nav">
+        <button class="carousel-btn" id="prevBtn" title="Anterior">
+          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <div class="carousel-dots" id="dotsContainer"></div>
+        <button class="carousel-btn" id="nextBtn" title="Próximo">
+          <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>Feito com todo o amor do mundo para você</p>
+    <p class="hearts">♡ ♡ ♡</p>
+  </footer>
+
+</div>
+
+
+<script>
+/* ══════════════════════════════════════
+   CONFIGURAÇÕES — EDITE AQUI
+   ══════════════════════════════════════ */
+const CONFIG = {
+  nome1: "Arthur",
+  nome2: "Giulia",
+
+  // ══════════════════════════════════════════
+  // DATA E HORA DO INÍCIO DO RELACIONAMENTO
+  // ══════════════════════════════════════════
+  // Formato: new Date(ANO, MÊS-1, DIA, HORA, MINUTO)
+  // MÊS-1 porque janeiro = 0, fevereiro = 1, etc.
+  //
+  // Exemplo: 14 de fevereiro de 2023 às 19h30
+  //   dataInicio: new Date(2023, 1, 14, 19, 30)
+  //
+  // Exemplo: 1 de junho de 2022 às 00h00
+  //   dataInicio: new Date(2022, 5, 1, 0, 0)
+  // ══════════════════════════════════════════
+  dataInicio: new Date(2026, 1, 8, 11, 0),
+
+  musica: {
+    titulo: "Nossa Música",   // ← nome da música
+    artista: "Artista",       // ← nome do artista
+    duracaoSegundos: 227,     // ← duração total (ex: 3:47 = 227)
+    inicioSegundos: 0         // ← segundo em que começa ao abrir
+  }
+};
+/* ══════════════════════════════════════ */
+
+
+// Nomes
+document.getElementById('nome1-header').textContent = CONFIG.nome1;
+document.getElementById('nome2-header').textContent = CONFIG.nome2;
+document.getElementById('nome1-sig').textContent    = CONFIG.nome1;
+
+// Player
+document.getElementById('trackTitle').textContent  = CONFIG.musica.titulo;
+document.getElementById('trackArtist').textContent = CONFIG.musica.artista;
+
+const totalSec = CONFIG.musica.duracaoSegundos;
+let currentSeconds = CONFIG.musica.inicioSegundos;
+let isPlaying = false;
+let playerInterval = null;
+
+function fmt(s) {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+document.getElementById('totalTime').textContent = fmt(totalSec);
+
+function updatePlayer() {
+  const pct = (currentSeconds / totalSec) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('currentTime').textContent = fmt(currentSeconds);
+}
+updatePlayer();
+
+document.getElementById('playBtn').addEventListener('click', function () {
+  isPlaying = !isPlaying;
+  const icon = document.getElementById('playIcon');
+  const card = document.getElementById('spotifyCard');
+  if (isPlaying) {
+    icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+    card.classList.add('playing');
+    playerInterval = setInterval(() => {
+      if (currentSeconds < totalSec) { currentSeconds++; updatePlayer(); }
+      else {
+        currentSeconds = 0; isPlaying = false;
+        icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+        card.classList.remove('playing');
+        clearInterval(playerInterval);
+      }
+    }, 1000);
+  } else {
+    icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+    card.classList.remove('playing');
+    clearInterval(playerInterval);
+  }
+});
+
+document.getElementById('progressTrack').addEventListener('click', function (e) {
+  const rect = this.getBoundingClientRect();
+  currentSeconds = Math.round(((e.clientX - rect.left) / rect.width) * totalSec);
+  updatePlayer();
+});
+
+// Touch na barra de progresso
+document.getElementById('progressTrack').addEventListener('touchstart', function (e) {
+  const rect = this.getBoundingClientRect();
+  currentSeconds = Math.round(((e.touches[0].clientX - rect.left) / rect.width) * totalSec);
+  updatePlayer();
+}, { passive: true });
+
+
+// Timer preciso — atualiza a cada segundo
+function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+function updateTimer() {
+  const now   = Date.now();
+  const start = CONFIG.dataInicio.getTime();
+  let diff    = Math.max(0, Math.floor((now - start) / 1000)); // diferença total em segundos
+
+  const seg = diff % 60;         diff = Math.floor(diff / 60);
+  const min = diff % 60;         diff = Math.floor(diff / 60);
+  const hor = diff % 24;         diff = Math.floor(diff / 24);
+
+  // Cálculo preciso de anos/meses/dias usando datas reais
+  const d0 = CONFIG.dataInicio;
+  const d1 = new Date(now);
+
+  let anos  = d1.getFullYear() - d0.getFullYear();
+  let meses = d1.getMonth()    - d0.getMonth();
+  let dias  = d1.getDate()     - d0.getDate();
+
+  if (dias < 0) {
+    meses--;
+    const ultimoDiaMesAnterior = new Date(d1.getFullYear(), d1.getMonth(), 0).getDate();
+    dias += ultimoDiaMesAnterior;
+  }
+  if (meses < 0) { anos--; meses += 12; }
+
+  document.getElementById('t-anos').textContent    = anos;
+  document.getElementById('t-meses').textContent   = meses;
+  document.getElementById('t-dias').textContent    = dias;
+  document.getElementById('t-horas').textContent   = hor;
+  document.getElementById('t-minutos').textContent = pad(min);
+
+  // Segundos com animação de pulso
+  const secEl = document.getElementById('t-segundos');
+  secEl.textContent = pad(seg);
+  secEl.classList.remove('sec-tick');
+  void secEl.offsetWidth; // reflow para reiniciar animação
+  secEl.classList.add('sec-tick');
+
+  // Exibir a data de início formatada
+  const mesesNomes = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  const h = d0.getHours(), m2 = d0.getMinutes();
+  const horaStr = (h > 0 || m2 > 0) ? ` às ${pad(h)}h${m2 > 0 ? pad(m2) : ''}` : '';
+  document.getElementById('timerDateDisplay').textContent =
+    `desde ${d0.getDate()} de ${mesesNomes[d0.getMonth()]} de ${d0.getFullYear()}${horaStr} ♡`;
+}
+
+updateTimer();
+setInterval(updateTimer, 1000);
+
+
+// Carrossel
+const track   = document.getElementById('carouselTrack');
+const slides  = track.querySelectorAll('.carousel-slide');
+const dotsEl  = document.getElementById('dotsContainer');
+let cur = 0, autoSlide;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsEl.appendChild(d);
+});
+
+function goTo(n) {
+  cur = (n + slides.length) % slides.length;
+  track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+  dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+}
+
+function startAuto() { autoSlide = setInterval(() => goTo(cur + 1), 5000); }
+
+document.getElementById('prevBtn').addEventListener('click', () => { clearInterval(autoSlide); goTo(cur - 1); startAuto(); });
+document.getElementById('nextBtn').addEventListener('click', () => { clearInterval(autoSlide); goTo(cur + 1); startAuto(); });
+
+let tx = 0;
+track.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+track.addEventListener('touchend',   e => {
+  const d = tx - e.changedTouches[0].clientX;
+  if (Math.abs(d) > 40) { clearInterval(autoSlide); goTo(cur + (d > 0 ? 1 : -1)); startAuto(); }
+});
+
+startAuto();
+</script>
+</body>
+</html>
