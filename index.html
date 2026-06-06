@@ -127,7 +127,7 @@ section:nth-child(5) { animation-delay: 0.55s; }
   0%,100% { transform: scale(1); box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 4px 16px rgba(180,60,100,0.3); }
   50% { transform: scale(1.012); box-shadow: 0 28px 70px rgba(0,0,0,0.75), 0 8px 24px rgba(180,60,100,0.45); }
 }
-.playing .album-art, .playing .album-art-placeholder { animation: albumPulse 2.5s ease-in-out infinite; }
+.playing .album-art, .playing .album-art-placeholder, .playing .media-switcher { animation: albumPulse 2.5s ease-in-out infinite; }
 
 .track-row { width: 100%; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; }
 .track-texts { flex: 1; min-width: 0; }
@@ -188,6 +188,45 @@ section:nth-child(5) { animation-delay: 0.55s; }
 
 /* YouTube player oculto */
 #yt-player { display: none; }
+
+/* ===== MEDIA SWITCHER (foto + video no player) ===== */
+.media-switcher {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 4px 16px rgba(180,60,100,0.3);
+  background: #1a0d16;
+}
+.media-photo {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; border-radius: 12px;
+  transition: opacity 0.9s ease; z-index: 1;
+}
+.media-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; border-radius: 12px;
+  transition: opacity 0.9s ease; z-index: 2; opacity: 0;
+}
+.media-switcher.show-video .media-video { opacity: 1; }
+.media-switcher.show-video .media-photo { opacity: 0.1; }
+.media-indicator {
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+  z-index: 5; display: flex; gap: 6px; align-items: center;
+}
+.media-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  transition: all 0.4s ease; cursor: pointer;
+}
+.media-dot.active {
+  background: rgba(255,255,255,0.95);
+  transform: scale(1.4);
+  box-shadow: 0 0 6px rgba(255,255,255,0.5);
+}
 
 /* ===== CONTADOR ===== */
 .timer-card {
@@ -506,12 +545,36 @@ section:nth-child(5) { animation-delay: 0.55s; }
         <div class="album-art-wrap">
           <!--
             ══════════════════════════════════════════
-            COLOQUE SUA FOTO AQUI:
-            <img class="album-art" src="foto-casal.jpg" alt="nós dois">
+            FOTO + VÍDEO DO PLAYER — edite abaixo:
+
+            media-photo → coloque o src da sua foto
+            media-video → coloque o src do seu vídeo
+              (formatos suportados: mp4, webm, mov)
             ══════════════════════════════════════════
           -->
-          <div class="album-art-placeholder" id="albumArtArea">
-            <img class="album-art" src="foto-casal.jpg" alt="nós dois">
+          <div class="media-switcher" id="mediaSwitcher">
+            <!-- FOTO (fica na camada de baixo) -->
+            <img
+              class="media-photo"
+              src="foto-casal.jpg"
+              alt="nós dois"
+              id="mediaPhoto"
+            >
+            <!-- VÍDEO (fica na camada de cima, aparece no alternador) -->
+            <video
+              class="media-video"
+              id="mediaVideo"
+              src="video-casal.mov"
+              muted
+              playsinline
+              loop
+              preload="metadata"
+            ></video>
+            <!-- Pontinhos indicadores -->
+            <div class="media-indicator">
+              <div class="media-dot active" id="dotFoto" onclick="switchMedia('foto')"></div>
+              <div class="media-dot"        id="dotVideo" onclick="switchMedia('video')"></div>
+            </div>
           </div>
         </div>
 
@@ -950,6 +1013,72 @@ function updateTimer() {
 }
 updateTimer();
 setInterval(updateTimer, 1000);
+
+
+// ══════════════════════════════════════════════════
+//   MEDIA SWITCHER — alterna foto ↔ vídeo no player
+// ══════════════════════════════════════════════════
+(function initMediaSwitcher() {
+  const switcher   = document.getElementById('mediaSwitcher');
+  const videoEl    = document.getElementById('mediaVideo');
+  const dotFoto    = document.getElementById('dotFoto');
+  const dotVideo   = document.getElementById('dotVideo');
+
+  // Verifica se o vídeo foi configurado (src não vazio e arquivo existe)
+  const videoSrc = videoEl ? videoEl.getAttribute('src') : '';
+  const hasVideo = videoSrc && videoSrc !== '' && videoSrc !== 'video-casal.mp4';
+
+  // Se não configurou o vídeo ainda, esconde o dot do vídeo
+  if (!hasVideo && dotVideo) dotVideo.style.display = 'none';
+
+  let currentMedia = 'foto'; // 'foto' ou 'video'
+  let autoInterval = null;
+
+  window.switchMedia = function(tipo) {
+    if (tipo === currentMedia) return;
+    currentMedia = tipo;
+
+    if (tipo === 'video') {
+      switcher.classList.add('show-video');
+      dotFoto.classList.remove('active');
+      dotVideo.classList.add('active');
+      if (videoEl) {
+        videoEl.play().catch(() => {}); // tenta reproduzir
+      }
+    } else {
+      switcher.classList.remove('show-video');
+      dotFoto.classList.add('active');
+      dotVideo.classList.remove('active');
+      if (videoEl) videoEl.pause();
+    }
+  };
+
+  // Alternância automática a cada 6 segundos (só se tiver vídeo configurado)
+  function startAutoSwitch() {
+    if (!hasVideo) return;
+    autoInterval = setInterval(function() {
+      switchMedia(currentMedia === 'foto' ? 'video' : 'foto');
+    }, 6000);
+  }
+
+  // Pausa o auto ao tocar manualmente nos dots
+  dotFoto.addEventListener('click', function() {
+    clearInterval(autoInterval);
+    switchMedia('foto');
+    startAutoSwitch(); // reinicia o ciclo do ponto clicado
+  });
+
+  if (dotVideo) {
+    dotVideo.addEventListener('click', function() {
+      clearInterval(autoInterval);
+      switchMedia('video');
+      startAutoSwitch();
+    });
+  }
+
+  // Inicia o ciclo automático
+  startAutoSwitch();
+})();
 
 
 // ══════════════════════════════════════════════════
